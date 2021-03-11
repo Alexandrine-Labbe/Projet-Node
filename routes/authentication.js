@@ -27,11 +27,11 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
     // const user = users.find(user => user.email === payload.user)
 
 
-    const fetchUser = axios.get(baseUrl + '/accounts', {headers: config, "login": payload.user});
+    const fetchUser = axios.get(baseUrl + '/accounts?q={"login": "' + payload.user +'"}', {headers: config});
 
     fetchUser.then(async user_json => {
 
-        let user = user_json.data;
+        let user = user_json.data[0];
 
         if (user) {
             next(null, user)
@@ -43,7 +43,7 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
 
 })
 
-passport.use('jwtStrategy', jwtStrategy);
+passport.use('jwt', jwtStrategy);
 
 
 
@@ -60,18 +60,18 @@ router.post('/login', urlEncodedParser, function(req, res) {
     }
 
 
-    const fetchUser = axios.get(baseUrl + '/accounts', {
+    const fetchUser = axios.get(baseUrl + '/accounts?q={"login": "' + login +'"}', {
         headers: config,
-        params: { login: 'user1' }
+
     });
 
     fetchUser.then(async user_json => {
 
-        let user = user_json.data;
+        let user = user_json.data[0];
+
 
         if (!user || user.password !== password) {
-            res.json(user)
-            // res.status(401).json({ error: 'Login / password do not match.' })
+            res.status(401).json({ error: 'Login / password do not match.' })
             return
         }
 
@@ -83,8 +83,43 @@ router.post('/login', urlEncodedParser, function(req, res) {
 
 })
 
+// router.get('/public', (req, res) => {
+//     res.send('I am public folks!')
+// })
+//
+// router.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
+//     res.send(req.user.login)
+// })
 
-router.get('/register',  function(req, res) {
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/register', urlEncodedParser,  function(req, res) {
+
+    let login = req.body.login;
+    let password = req.body.password;
+
+
+
+    const createUser = axios.get(baseUrl + '/accounts', {
+        headers: config,
+        body: { login: login, password: password},
+        json: true
+    });
+
+    createUser.then(async response => {
+        res.sendStatus(200);
+
+    }).catch(handleError)
 
 
 })
