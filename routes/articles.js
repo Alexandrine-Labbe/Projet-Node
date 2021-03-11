@@ -2,8 +2,15 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
+const baseUrl = "https://testdatabase-c74f.restdb.io/rest"
+const config = {
+    'cache-control': 'no-cache',
+    'x-apikey': '91cde88d7c740120212fa43dac25eec673551'
+};
+
+
 router.get('/',  function(req, res) {
-    const fetchPosts = axios.get('https://jsonplaceholder.typicode.com/posts');
+    const fetchPosts = axios.get(baseUrl + '/articles', {headers: config});
 
     const posts = fetchPosts.then(async post_list => {
 
