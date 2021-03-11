@@ -20,6 +20,17 @@ router.get('/',  function(req, res) {
     }).catch(handleError)
 })
 
+router.get('/:article',  function(req, res) {
+    const fetchPosts = axios.get(baseUrl + '/articles?q={"id": ' + req.params.article + '}', {headers: config});
+
+    const posts = fetchPosts.then(async post_list => {
+
+        let data = post_list.data;
+
+        res.send(data);
+    }).catch(handleError)
+})
+
 
 router.get('/:post',  function(req, res) {
 
