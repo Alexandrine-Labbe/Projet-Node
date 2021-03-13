@@ -3,7 +3,6 @@ const PORT = process.env.PORT || 5000
 const routerArticles = require('./routes/articles')
 const routerAuthentification = require('./routes/authentication')
 const bodyParser = require('body-parser')
-const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 const cors = require('cors')
 
 const app = express();

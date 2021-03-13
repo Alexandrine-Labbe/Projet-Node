@@ -55,8 +55,8 @@ router.post('/login', urlEncodedParser, function(req, res) {
     const password = req.body.password;
 
     if (!login || !password) {
-        res.status(401).json({ error: 'Login or password was not provided.' })
-        return
+        res.status(401).json({ error: 'Login or password was not provided.' });
+        return;
     }
 
 
@@ -71,13 +71,13 @@ router.post('/login', urlEncodedParser, function(req, res) {
 
 
         if (!user || user.password !== password) {
-            res.status(401).json({ error: 'Login / password do not match.' })
-            return
+            res.status(401).json({ error: 'Login / password do not match.' });
+            return;
         }
 
-        const userJwt = jwt.sign({ user: user.login }, secret)
+        const userJwt = jwt.sign({ user: user.login }, secret);
 
-        res.json({ jwt: userJwt })
+        res.json({ jwt: userJwt });
 
     }).catch(handleError)
 
@@ -91,36 +91,24 @@ router.post('/login', urlEncodedParser, function(req, res) {
 //     res.send(req.user.login)
 // })
 
-
-
-
-
-
-
-
-
-
-
-
-
 router.post('/register', urlEncodedParser,  function(req, res) {
 
     let login = req.body.login;
     let password = req.body.password;
 
+    const createUser = axios.post('https://testdatabase-c74f.restdb.io/rest/accounts',{ login: login, password: password}, {
+        headers:
+            { 'cache-control': 'no-cache',
+                'x-apikey': '91cde88d7c740120212fa43dac25eec673551',
+                'content-type': 'application/json' },
 
-
-    const createUser = axios.get(baseUrl + '/accounts', {
-        headers: config,
-        body: { login: login, password: password},
         json: true
     });
 
-    createUser.then(async response => {
+    createUser.then(async () => {
         res.sendStatus(200);
 
     }).catch(handleError)
-
 
 })
 
