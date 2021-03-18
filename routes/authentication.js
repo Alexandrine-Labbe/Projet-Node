@@ -46,9 +46,6 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
 passport.use('jwt', jwtStrategy);
 
 
-
-
-
 router.post('/login', urlEncodedParser, function(req, res) {
 
     const login = req.body.login;
@@ -96,11 +93,8 @@ router.post('/register', urlEncodedParser,  function(req, res) {
     let login = req.body.login;
     let password = req.body.password;
 
-    const createUser = axios.post('https://testdatabase-c74f.restdb.io/rest/accounts',{ login: login, password: password}, {
-        headers:
-            { 'cache-control': 'no-cache',
-                'x-apikey': '91cde88d7c740120212fa43dac25eec673551',
-                'content-type': 'application/json' },
+    const createUser = axios.post(baseUrl + '/accounts',{ login: login, password: password}, {
+        headers:config,
 
         json: true
     });
