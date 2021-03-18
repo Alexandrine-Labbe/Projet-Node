@@ -33,34 +33,50 @@ router.get('/:article',  function(req, res) {
 
 
 
-router.post('/create', function(req, res) {
-
-
+router.post('/create', function(req, res){
     if(!req.body.title || !req.body.content || !req.body.userId){
         res.send("Missing value")
     }
     else{
-        const fetchPosts = axios.post(baseUrl + '/articles', {headers: config},
-        {body: { title:req.body.title, body: req.body.body, userId: req.body.userId}},
-        );
+    	const createArticle = axios.post('https://testdatabase-c74f.restdb.io/rest/articles',{ title: req.body.title, body: req.body.content, userId: req.body.userId}, {
+        	headers:
+            	{ 'cache-control': 'no-cache',
+                	'x-apikey': '91cde88d7c740120212fa43dac25eec673551',
+                	'content-type': 'application/json' },
+        	json: true
+    	});
 
-        const posts = fetchPosts.then(async post_list => {
+    	createArticle.then(async () => {
+        	res.sendStatus(200);
 
-            res.send("New Article Created.");
-    
-            
-        }).catch(handleError)
-
-        res.send("Error");
-        
+    	}).catch(handleError)
     }
-
-    
-
-    
 })
 
 
+router.post('/update/:identifier', function(req, res){
+    if(!req.body.title && !req.body.content && !req.body.userId){
+        res.send("Missing updating data")
+    }
+    else{
+    	const updateArticle = axios.put('https://testdatabase-c74f.restdb.io/rest/articles/' + req.params.identifier, { 
+		title: req.body.title,
+		body: req.body.content,
+		userId: req.body.userId
+	}, {
+        	headers:
+            	{ 'cache-control': 'no-cache',
+                	'x-apikey': '91cde88d7c740120212fa43dac25eec673551',
+                	'content-type': 'application/json' },
+        	json: true
+    	});
+
+    	updateArticle.then(async () => {
+        	res.sendStatus(200);
+
+    	}).catch(handleError)
+    }
+})
 
 function handleError(err) {
     console.error(err)
