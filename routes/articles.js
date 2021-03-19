@@ -22,31 +22,16 @@ router.get('/',  function(req, res) {
 
 router.get('/:id',  function(req, res) {
 	
-	const fetchPosts = axios.get(baseUrl + '/articles', {headers: config});
-	let data;
-	let count;
-	let id = req.params.id;
-	console.log('ID:', id);
+	const fetchPosts = axios.get(baseUrl + '/articles/' + req.params.id, {headers: config});
 	
 	
-	const posts = fetchPosts.then(async post_list => {
+	
+	const posts = fetchPosts.then(async post => {
 		
-		data = post_list.data;
-		console.log(data.length)
-		count = 0;
-		let notfound = true;
-		while(count < data.length && notfound){
-			if(data[count].id == id){
-				notfound = false;
-			}
-			count++
-		}
-		if(notfound){
-			res.sendStatus(404);
-		}
-		else{
-			res.send(data[count-1]);
-		}
+		data = post.data;
+		res.send(data);
+
+		
 		
 		
 	}).catch(handleError)
