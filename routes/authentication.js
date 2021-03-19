@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const passportJWT = require('passport-jwt')
-const secret = 'thisismysecret'
+const secret = 'wowasecret'
 const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 const axios = require('axios');
 const router = express.Router();
@@ -23,9 +23,6 @@ const jwtOptions = {
 }
 
 const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
-    // // usually this would be a database call:
-    // const user = users.find(user => user.email === payload.user)
-
 
     const fetchUser = axios.get(baseUrl + '/accounts?q={"login": "' + payload.user +'"}', {headers: config});
 
@@ -80,13 +77,6 @@ router.post('/login', urlEncodedParser, function(req, res) {
 
 })
 
-// router.get('/public', (req, res) => {
-//     res.send('I am public folks!')
-// })
-//
-// router.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     res.send(req.user.login)
-// })
 
 router.post('/register', urlEncodedParser,  function(req, res) {
 
