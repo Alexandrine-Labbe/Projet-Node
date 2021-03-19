@@ -30,7 +30,7 @@ router.get('/:id',  function(req, res) {
 		
 		data = post.data;
 		res.send(data);
-
+		
 		
 		
 		
@@ -84,6 +84,24 @@ router.post('/update/:identifier', function(req, res){
 	}).catch(handleError)
 }
 })
+
+router.get('/delete/:identifier', function(req, res){
+	
+	const deleteArticle = axios.delete('https://testdatabase-c74f.restdb.io/rest/articles/' + req.params.identifier, {
+	headers:
+	{ 'cache-control': 'no-cache',
+	'x-apikey': '91cde88d7c740120212fa43dac25eec673551',
+	'content-type': 'application/json' },
+	json: true
+});
+
+deleteArticle.then(async () => {
+	res.sendStatus(200);
+	
+}).catch(handleError)
+
+})
+
 
 function handleError(err) {
 	console.error(err)
