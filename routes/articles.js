@@ -75,7 +75,7 @@ router.get('/:id',  function(req, res) {
 
 router.post('/create', passport.authenticate('jwt', { session: false }),function(req, res){
 	if(!req.body.title || !req.body.content || !req.body.userId){
-		res.send("Missing value")
+		res.sendStatus(400).send("Missing value")
 	}
 	else{
 		const createArticle = axios.post(baseUrl + '/articles',{ title: req.body.title, body: req.body.content, userId: req.body.userId}, {
@@ -93,7 +93,7 @@ router.post('/create', passport.authenticate('jwt', { session: false }),function
 
 router.post('/update/:identifier', passport.authenticate('jwt', { session: false }), function(req, res){
 	if(!req.body.title && !req.body.content && !req.body.userId){
-		res.send("Missing updating data")
+		res.sendStatus(400).send("Missing updating data")
 	}
 	else{
 		let user_auth = req.user;
