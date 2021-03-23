@@ -71,7 +71,7 @@ router.post('/login', urlEncodedParser, function(req, res) {
 
         const userJwt = jwt.sign({ user: user.login }, secret);
 
-        res.json({ jwt: userJwt });
+        res.json({ jwt: userJwt, id: user.id });
 
     }).catch(handleError)
 
