@@ -83,9 +83,9 @@ router.post('/create', passport.authenticate('jwt', { session: false }),function
 			json: true
 		});
 
-		createArticle.then(async () => {
-			res.sendStatus(200);
-
+		createArticle.then(async post => {
+			console.log(post)
+			res.json({ _id: post.data._id }).sendStatus(200);
 		}).catch(handleError)
 	}
 })
