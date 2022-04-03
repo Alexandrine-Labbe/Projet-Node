@@ -1,4 +1,7 @@
 # Projet-Node
+
+Projet réalisé pour un cours dans le cadre de la licence professionnelle APIDAE.
+
 ## Install 
 Clone the project.
 
